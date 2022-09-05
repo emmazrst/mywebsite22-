@@ -1,0 +1,118 @@
+baseURL: 'https://website22emma.netlify.app/'
+languageCode: en-us
+title: Lolilol ik ben een trol
+theme: forty
+googleAnalytics: ''
+disqusShortname: ''
+params:
+  name: Your name
+  description: Your description
+  custom_css: []
+  custom_js: []
+  favicon: favicon.ico
+  image: ''
+  error404:
+    heading: Page couldn't be found
+    text: 'Please visit [this page](/)'
+  navigation:
+    title: Yeaaah 
+    subtitle: By HTML5 Up
+    menu: Menu
+    links:
+      - name: Home
+        url: '#'
+      - name: Blogs
+        url: blogs
+      - name: Generic Blog
+        url: blogs/ipsum
+      - name: Elements
+        url: elements.html
+    button1:
+      - name: Get Started
+        url: blogs
+    button2:
+      - name: Log In
+        url: '#'
+  banner:
+    title: 'Hi, my name is Forty'
+    subtitle: |-
+      A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
+      AND RELEASED UNDER THE CREATIVE COMMONS.
+    buttonText: Get Started
+  tiles:
+    enable: true
+    showcase:
+      - title: Aliquam
+        subtitle: Ipsum Dolor Sit Amet
+        image: pic01.jpg
+        url: blogs/aliquam
+      - title: Tempus
+        subtitle: Feugiat Amet Tempus
+        image: pic02.jpg
+        url: blogs/tempus
+      - title: Magna
+        subtitle: Lorem Etiam Nullam
+        image: pic03.jpg
+        url: blogs/magna
+      - title: Ipsum
+        subtitle: Nisl Sed Aliquam
+        image: pic04.jpg
+        url: blogs/ipsum
+      - title: Consequat
+        subtitle: Ipsum Dolor Sit Amet
+        image: pic05.jpg
+        url: blogs/ipsum
+      - title: Etiam
+        subtitle: Feugiat Amet Tempus
+        image: pic06.jpg
+        url: blogs/ipsum
+  blog: {}
+  two:
+    enable: true
+    title: Massa libero
+    subtitle: |-
+      Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. 
+          Mauris aliquet magna magna sed nunc rhoncus pharetra. 
+          Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. 
+          Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero.
+          Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus.
+    buttonText: Get Started
+    url: blogs
+  contact:
+    enable: true
+    buttonSend: Send message
+    buttonClear: Clear
+    email:
+      - title: Email
+        email: example@domain.com
+    phone:
+      - title: Phone
+        phone: (000) 000-0000 x1234
+    address:
+      - title: Address
+        street: Street
+        city: 'City, ST 00000'
+        country: Country
+  footer:
+    enable: true
+    copyright: Company Name
+    social:
+      - icon: fa-twitter
+        url: 'https://www.twitter.com'
+        label: Twitter
+      - icon: fa-facebook
+        url: 'https://www.facebook.com'
+        label: Facebook
+      - icon: fa-instagram
+        url: 'https://www.instagram.com'
+        label: Instagram
+      - icon: fa-github
+        url: 'https://www.github.com'
+        label: GitHub
+      - icon: fa-linkedin
+        url: 'https://www.linkedin.com'
+        label: LinkedIn
+    quicklinks:
+      - text: 'Design: '
+        url: 'https://www.html5up.net'
+        alt: HTML5 UP
