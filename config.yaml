@@ -34,7 +34,7 @@ params:
       - name: Log In
         url: '#'
   banner:
-    title: 'Hi, my name is Forty'
+    title: 'Hello, my name is emma and this is my website'
     subtitle: |-
       A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
       AND RELEASED UNDER THE CREATIVE COMMONS.
