@@ -6,7 +6,7 @@ googleAnalytics: ''
 disqusShortname: ''
 params:
   name: Emma Zurstrassen
-  description: The queen's website
+  description: Emma's website
   custom_css: []
   custom_js: []
   favicon: favicon.ico
@@ -15,11 +15,11 @@ params:
     heading: Page couldn't be found
     text: 'Please visit [this page](/)'
   navigation:
-    title: Dopest website
-    subtitle: hi people
+    title: Goodmorning 
+    subtitle: internet people
     menu: Menu
     links:
-      - name: Home
+      - name: Homepage
         url: '#'
       - name: Blogs
         url: blogs
@@ -34,29 +34,29 @@ params:
       - name: Log In
         url: '#'
   banner:
-    title: 'Welcome to Emma s world of wonders'
+    title: "Emma Zurstrassen"
     subtitle: |-
-      good morning people of the internet
-    buttonText: Discover my amazing work
+      Who is she ? What does she do ? What does she like ? 
+    buttonText: answer all your questions 
   tiles:
     enable: true
     showcase:
-      - title: Aliquam
-        subtitle: Ipsum Dolor Sit Amet
+      - title: Who's Emma ? 
+        subtitle: A bit about me 
         image: cover_website.JPG
-        url: blogs/aliquam
-      - title: Tempus
-        subtitle: Feugiat Amet Tempus
+        url: blogs/emma
+      - title: CV
+        subtitle: A bit more formal
         image: pic02.jpg
-        url: blogs/tempus
-      - title: Magna
+        url: blogs/cv
+      - title: Project 1 
         subtitle: Lorem Etiam Nullam
         image: pic03.jpg
-        url: blogs/magna
-      - title: Ipsum
+        url: blogs/project1
+      - title: Project 2
         subtitle: Nisl Sed Aliquam
         image: pic04.jpg
-        url: blogs/ipsum
+        url: blogs/project2
       - title: Consequat
         subtitle: Ipsum Dolor Sit Amet
         image: pic05.jpg
@@ -68,14 +68,11 @@ params:
   blog: {}
   two:
     enable: true
-    title: Massa libero
+    title: Dear website visitor 
     subtitle: |-
-      Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. 
-          Mauris aliquet magna magna sed nunc rhoncus pharetra. 
-          Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. 
-          Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero.
-          Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus.
-    buttonText: Get Started
+      I hope you were able to get to know me through this website. Feel free to reach out if you have any questions, want to know more about me or just want to hang out for a coffee. 
+      Always happy to meet new people and hear fun stories. 
+    buttonText: Discover my work 
     url: blogs
   contact:
     enable: true
@@ -83,33 +80,33 @@ params:
     buttonClear: Clear
     email:
       - title: Email
-        email: example@domain.com
+        email: emmazurs@gmail.com
     phone:
-      - title: Phone
-        phone: (000) 000-0000 x1234
+      - title: text me 
+        phone: +32 479 47 63 65
     address:
-      - title: Address
-        street: Street
-        city: 'City, ST 00000'
-        country: Country
+      - title: write me 
+        street: 3 Chilworth Mews
+        city: 'London'
+        country: UK
   footer:
     enable: true
-    copyright: Company Name
+    copyright: Emma Zurstrassen
     social:
       - icon: fa-twitter
-        url: 'https://www.twitter.com'
+        url: 'https://twitter.com/EmmaZurstrassen'
         label: Twitter
       - icon: fa-facebook
-        url: 'https://www.facebook.com'
+        url: 'https://www.facebook.com/emma.zurstrassen/'
         label: Facebook
       - icon: fa-instagram
-        url: 'https://www.instagram.com'
+        url: 'https://www.instagram.com/emmazrst/'
         label: Instagram
       - icon: fa-github
-        url: 'https://www.github.com'
+        url: 'https://github.com/emmazrst'
         label: GitHub
       - icon: fa-linkedin
-        url: 'https://www.linkedin.com'
+        url: 'https://www.linkedin.com/in/emmazurs/'
         label: LinkedIn
     quicklinks:
       - text: 'Design: '

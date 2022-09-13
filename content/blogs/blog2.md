@@ -1,7 +1,7 @@
 ---
 title: "Magna"
 description: "Lorem Etiam Nullam"
-slug: "magna"
+slug: "cv"
 image: pic09.jpg
 keywords: ""
 categories: 

@@ -1,7 +1,7 @@
 ---
-title: "Ipsum"
+title: "Who's Emma"
 description: ""
-slug: "ipsum"
+slug: "emma"
 image: pic10.jpg
 keywords: ""
 categories: 
