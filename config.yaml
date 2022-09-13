@@ -1,12 +1,12 @@
 baseURL: 'https://website22emma.netlify.app/'
 languageCode: en-us
-title: Lolilol ik ben een trol
+title: Dopest website out there 
 theme: forty
 googleAnalytics: ''
 disqusShortname: ''
 params:
-  name: Your name
-  description: Your description
+  name: Emma Zurstrassen
+  description: The queen's website
   custom_css: []
   custom_js: []
   favicon: favicon.ico
@@ -15,8 +15,8 @@ params:
     heading: Page couldn't be found
     text: 'Please visit [this page](/)'
   navigation:
-    title: Yeaaah 
-    subtitle: By HTML5 Up
+    title: Dopest website
+    subtitle: hi people
     menu: Menu
     links:
       - name: Home
@@ -34,17 +34,16 @@ params:
       - name: Log In
         url: '#'
   banner:
-    title: 'Hello, my name is emma and this is my website'
+    title: 'Welcome to Emma s world of wonders'
     subtitle: |-
-      A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
-      AND RELEASED UNDER THE CREATIVE COMMONS.
-    buttonText: Get Started
+      good morning people of the internet
+    buttonText: Discover my amazing work
   tiles:
     enable: true
     showcase:
       - title: Aliquam
         subtitle: Ipsum Dolor Sit Amet
-        image: pic01.jpg
+        image: cover_website.JPG
         url: blogs/aliquam
       - title: Tempus
         subtitle: Feugiat Amet Tempus
