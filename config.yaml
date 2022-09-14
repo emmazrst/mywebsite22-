@@ -5,7 +5,7 @@ theme: forty
 googleAnalytics: ''
 disqusShortname: ''
 params:
-  name: Emma Zurstrassen
+  name: I am Emma Zurstrassen
   description: Emma's website
   custom_css: []
   custom_js: []
@@ -34,7 +34,7 @@ params:
       - name: Log In
         url: '#'
   banner:
-    title: "Emma Zurstrassen"
+    title: "Hi I'm Emma"
     subtitle: |-
       Who is she ? What does she do ? What does she like ? 
     buttonText: answer all your questions 
