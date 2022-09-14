@@ -1,0 +1,126 @@
+---
+title: " Rents in San Francsisco 2000-2018"
+description: "This first project analyses and visualizes rental prices in the San Francisco and the Bay Area"
+image: sf.jpg
+slug: "project1"
+keywords: ""
+categories: 
+    - ""
+    - ""
+date: 2017-10-31T22:26:13-05:00
+draft: false
+---
+
+
+```{r, setup, echo=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+```
+
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+library(ggplot2)
+library(ggh4x)
+library(psych)
+library(devtools)
+library(patchwork)
+```
+
+
+# Rents in San Francsisco 2000-2018
+
+## This first project analyses and visualizes rental prices in the San Francisco and the Bay Area
+
+[Kate Pennington](https://www.katepennington.org/data) created a panel of historic Craigslist rents by scraping posts archived by the Wayback Machine. We are using this dataset below.
+
+```{r}
+rent <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-07-05/rent.csv')
+
+```
+
+The various types of variables in the data are:
+```{r skim_data}
+skimr::skim(rent)
+
+```
+
+A plot that shows the top 20 cities in terms of % of classifieds between 2000-2018. We calculated the number of listings by city, and then convert that number to a %.
+```{r top_cities}
+rent_city <- rent %>% group_by(city) %>% summarize(classified = count(city))
+rent_city <- rent_city %>%  mutate(perc_classified = 100*classified/sum(classified)) %>% arrange(desc(perc_classified))
+
+rent_city %>% 
+  slice_max(order_by = perc_classified, n=20) %>% 
+  ggplot(aes(x = perc_classified, y = fct_reorder(city, perc_classified))) +
+  geom_col() +
+  theme_bw()+
+  labs(
+    title = "San Francisco accounts for more than a quarter of all rentals classified",
+    subtitle = "% of Craiglist listings, 2000 - 2018",
+    x = "", y = ""
+  )+
+  NULL
+```
+
+A plot that shows the evolution of median prices in San Francisco for 0, 1, 2, and 3 bedrooms listings. 
+```{r sf_median_prices}
+rent_by_beds <- rent %>%  filter(city == "san francisco") %>% group_by(beds,year) %>% summarise(median_price_per_year = median(price)) %>% filter(beds<=3)
+
+rent_by_beds %>%  ggplot(aes(x = year, y = median_price_per_year, color = beds)) +  geom_line() + theme_bw()+ facet_wrap2(vars(beds), ncol = 4)+ labs(title = "San Francisco rents have been steadily increasing", subtitle = "0 to 3 bed listings, 2000 - 2018", x = "", y = "") + NULL
+
+```
+
+Finally, a plot that shows median rental prices for the top 12 cities in the Bay area.
+```{r spirit_plot1}
+
+rent_city_12 <- rent_city %>% slice(1:12)
+vector <- unlist(rent_city_12[1])
+rent_fortop12 <- rent %>%  subset(city %in% vector)
+  
+rent_by_1bed <- rent_fortop12 %>% filter(beds == 1) %>% group_by(city, year) %>% summarise(median_price_per_year_1bed = median(price))
+
+ggplot(rent_by_1bed, aes(x=year, y= median_price_per_year_1bed, color = city)) + geom_line() + theme_bw()+ facet_wrap(vars(city))+ labs(title = "Rental Prices for 1 bedroom flat in Bay Area") + NULL
+
+```
+
+Inference from the above plots:
+
+From 2000 to 2018, San Francisco and the Bay Area saw a dramatic increase in rent price mainly due to the booming tech sector driving new and wealthy residents. The plots for the rental prices of the top 12 cities show an increasing trend which peaks around 2007, followed by a drop reflecting the 2008 stock market and housing crash preceded by the housing market bubble. From around 2012, markets started recovering and rental prices rose dramatically. This is attributed to the high-tech boom in the silicon valley combined with very limited supply of rental units. The most popular places such as San Francisco and Palo Alto showed the sharpest increase in rental prices. After peaking in 2015, rent in most areas starts to decrease which might be due to an increase in supply of rental units.
+
+
+Create a graph that calculates the cumulative % change for 0, 1, and 2-bed flats between 2000 and 2018 for the top twelve cities in Bay Area, by number of ads that appeared in Craigslist.
+
+
+```{r new_spirit_plot}
+
+rent_city_12 <- rent_city %>% slice(1:12)
+vector <- unlist(rent_city_12[1])
+rent_fortop12 <- rent %>%  subset(city %in% vector)
+  
+rent_by_bed <- rent_fortop12 %>% filter(beds<=2) %>% group_by(city, beds, year) %>% summarise(median_price_per_year_1bed = median(price), .groups ='keep' ) 
+
+rent_by_bed_cumm <- rent_by_bed %>% group_by(city,beds) %>% mutate(cumm_perc = (median_price_per_year_1bed/ lag(median_price_per_year_1bed) - 1 ) * 100) %>% group_by(city,beds) %>%  mutate(cumm_perc_change = cumsum(ifelse(is.na(cumm_perc), 100 , cumm_perc)))
+
+ggplot(rent_by_bed_cumm, aes(x=year, y= cumm_perc_change, color = city)) + geom_line() + theme_bw() + facet_grid(vars(beds),vars(city)) + labs(title = "Cumulative % change in 0,1, and 2-bed rentals in Bay Area 2000-2018", y='Cummulative percentage change') + theme(legend.position="none") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+NULL
+
+```
+
