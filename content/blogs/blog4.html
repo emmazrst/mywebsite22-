@@ -1,8 +1,8 @@
 ---
-title: "Aliquam"
+title: "Bike Rental Data in London"
 description: "YO"
 slug: "project2"
-image: pic07.jpg
+image: bike.jpg
 keywords: ""
 categories: 
     - ""
@@ -14,10 +14,12 @@ draft: false
 
 
 
-<div id="challenge-1-excess-rentals-in-tfl-bike-sharing" class="section level1">
-<h1>Challenge 1: Excess rentals in TfL bike sharing</h1>
-<p>Recall the TfL data on how many bikes were hired every single day. We
-can get the latest data by running the following</p>
+<div id="bike-rentals-in-london" class="section level1">
+<h1>Bike Rentals in London</h1>
+<div id="excess-rentals-in-tfl-bike-sharing" class="section level2">
+<h2>Excess rentals in TfL bike sharing</h2>
+<p>This project presents some visualization around TfL bike sharing usage in London.
+We can get the latest data by running the following.</p>
 <pre class="r"><code>url &lt;- &quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&quot;
 
 # Download TFL data to temporary file
@@ -40,17 +42,13 @@ bike &lt;- bike0 %&gt;%
   mutate (year = year(day),
           month = lubridate::month(day, label = FALSE),
           week = week(day))</code></pre>
-<p>We can easily create a facet grid that plots bikes hired by month and
-year since 2015</p>
-<p>However, the challenge I want you to work on is to reproduce the
-following two graphs.</p>
+<p>The first graph displays the change from the monthly average (calculated between 2016-2019), shown by the blue line.</p>
 <p><img src="/blogs/blog4_files/figure-html/tfl_absolute_monthly_change-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>The second one looks at percentage changes from the expected level of
 weekly rentals. The two grey shaded rectangles correspond to Q2 (weeks
 14-26) and Q4 (weeks 40-52).</p>
 <p><img src="/blogs/blog4_files/figure-html/tfl_percent_change-1.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>Should you use the mean or the median to calculate your expected
-rentals? Why?</p>
-<p>We should use the mean to calculate expected rentals as</p>
+<p>Weekly changes in bike rentals tend to be quite symmetrical around the weekly average calculated between 2016 and 2019. In second quarter of 2020 and 1st quarter of 2021 roughly correspond to Covid-19 lock-downs in London, which explains the negative difference between the average bike rentals from 2016 to 2019. In 2022, bike rentals were on almost always higher than the calculated average (2016 - 2019). Perhaps an explanation is that this reflects the post lock-down feeling of wanting to be outside more, especially as temperatures rise.</p>
 <hr />
+</div>
 </div>
