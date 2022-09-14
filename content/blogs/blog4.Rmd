@@ -12,5 +12,149 @@ draft: false
 
 ---
 
-THIS IS WHERE STUFF APPEARS !!! 
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
 
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+```
+
+```{r load-libraries, include=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(httr)
+library(readxl)
+library(vroom)
+library(wbstats)
+library(countrycode)
+library(patchwork)
+library(gganimate)
+library(scales)
+library(infer)
+library(wbstats)
+```
+
+
+# Challenge 1: Excess rentals in TfL bike sharing
+
+Recall the TfL data on how many bikes were hired every single day. We
+can get the latest data by running the following
+
+```{r, get_tfl_data, cache=TRUE}
+url <- "https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx"
+
+# Download TFL data to temporary file
+httr::GET(url, write_disk(bike.temp <- tempfile(fileext = ".xlsx")))
+
+# Use read_excel to read it as dataframe
+bike0 <- read_excel(bike.temp,
+                   sheet = "Data",
+                   range = cell_cols("A:B"))
+
+# change dates to get year, month, and week
+bike <- bike0 %>% 
+  clean_names() %>% 
+  rename (bikes_hired = number_of_bicycle_hires) %>% 
+  mutate (year = year(day),
+          month = lubridate::month(day, label = FALSE),
+          week = week(day))
+```
+
+We can easily create a facet grid that plots bikes hired by month and
+year since 2015
+
+
+However, the challenge I want you to work on is to reproduce the
+following two graphs.
+
+```{r tfl_absolute_monthly_change, echo=FALSE, out.width="100%"}
+
+bike_average_16_19 <- bike %>% 
+  filter(year >= '2016' & year<'2020')%>%
+  group_by(month) %>%
+  summarize(monthly_bikes = mean(bikes_hired)) 
+
+bikes_average_per_month_per_year <- bike %>%
+  filter(year >= '2017') %>%
+  group_by(year, month) %>%
+  mutate(yearly_monthly_bikes = mean(bikes_hired)) %>%
+  left_join(bike_average_16_19, by = 'month')
+
+  ggplot(bikes_average_per_month_per_year, aes(x = month, y = monthly_bikes)) + 
+    geom_line(aes(y = monthly_bikes), colour='blue', size=1) +
+    geom_line(aes(y = yearly_monthly_bikes)) +
+    geom_ribbon(aes(ymin=monthly_bikes, ymax=pmax(monthly_bikes, yearly_monthly_bikes)), fill = 'green', alpha = 0.2) +
+    geom_ribbon(aes(ymin=pmin(monthly_bikes, yearly_monthly_bikes), ymax=monthly_bikes), fill = 'red', alpha = 0.2) +
+    theme_bw() + 
+    facet_wrap(~year) +
+    scale_x_continuous(
+    breaks = seq_along(month.name), 
+    labels = month.abb) +
+    labs(title = "Monthly change in Tfl bike rentals",
+       subtitle = "Between 2016-2019",
+       x = "Month",
+       y = "Bikes rentals")
+  
+
+```
+
+The second one looks at percentage changes from the expected level of
+weekly rentals. The two grey shaded rectangles correspond to Q2 (weeks
+14-26) and Q4 (weeks 40-52).
+
+```{r tfl_percent_change, echo=FALSE, out.width="100%"}
+
+weekly_avg_16_19 <- bike %>% 
+  filter(year > '2015' & year<'2020')%>%
+  group_by(week) %>%
+  summarize(weekly_bikes = mean(bikes_hired)) 
+
+weekly_yearly_avg <- bike %>%
+  filter(year > '2016' ) %>%
+  group_by(week, year) %>%
+  left_join(weekly_avg_16_19, by = 'week') %>%
+  mutate(weekly_bikes_per_year = mean(bikes_hired)) %>% 
+  mutate(per_difference =(weekly_bikes_per_year-weekly_bikes)/weekly_bikes*100)
+ 
+  
+  weekly_yearly_avg%>%
+  ggplot(aes(x = week, y = per_difference)) + 
+    geom_line(aes(y = per_difference)) + 
+    geom_ribbon(aes(ymin=0, ymax=pmax(0, per_difference), alpha = 0.3), fill="green") +
+    geom_ribbon(aes(ymin=pmin(0, per_difference), ymax=0, alpha = 0.3), fill="red")+ 
+    annotate(geom = "rect", xmin = 13, xmax = 26, ymin = -Inf, ymax = Inf,
+           fill = "grey", alpha = 0.5) +
+    annotate(geom = "rect", xmin = 39, xmax = 53, ymin = -Inf, ymax = Inf,
+           fill = "grey", alpha = 0.5)+
+    geom_rug(data=subset(weekly_yearly_avg, per_difference>=0),color="green",sides="b")+
+    geom_rug(data=subset(weekly_yearly_avg ,per_difference<0),color="red",sides="b")+
+    facet_wrap(~year)+
+    labs(title="Weekly changes in bike rentals",
+       subtitle="% change from weekly averages between 2016-2019",
+       x="week",
+       y="")+
+    scale_y_continuous(labels = scales::percent_format(scale = 1))+
+    theme(legend.position = "none")
+
+```
+
+Should you use the mean or the median to calculate your expected
+rentals? Why?
+
+We should use the mean to calculate expected rentals as 
+
+---

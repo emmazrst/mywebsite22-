@@ -10,11 +10,47 @@ categories:
 date: 2017-10-31T22:42:51-05:00
 draft: false
 
-
-
-
 ---
 
 
 
-<p>THIS IS WHERE STUFF APPEARS !!!</p>
+<div id="challenge-1-excess-rentals-in-tfl-bike-sharing" class="section level1">
+<h1>Challenge 1: Excess rentals in TfL bike sharing</h1>
+<p>Recall the TfL data on how many bikes were hired every single day. We
+can get the latest data by running the following</p>
+<pre class="r"><code>url &lt;- &quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&quot;
+
+# Download TFL data to temporary file
+httr::GET(url, write_disk(bike.temp &lt;- tempfile(fileext = &quot;.xlsx&quot;)))</code></pre>
+<pre><code>## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2022-09-06T12%3A41%3A48/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20220914%2Feu-west-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20220914T104048Z&amp;X-Amz-Expires=300&amp;X-Amz-Signature=62913c78f51e1475942a32ab0cd397e6bc912ebff93f6985fb24c431502a12e5&amp;X-Amz-SignedHeaders=host]
+##   Date: 2022-09-14 10:43
+##   Status: 200
+##   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+##   Size: 180 kB
+## &lt;ON DISK&gt;  /var/folders/03/7l328pg93b9715g4y_d61_1m0000gn/T//RtmpjhVvqF/file95af1450f0d6.xlsx</code></pre>
+<pre class="r"><code># Use read_excel to read it as dataframe
+bike0 &lt;- read_excel(bike.temp,
+                   sheet = &quot;Data&quot;,
+                   range = cell_cols(&quot;A:B&quot;))
+
+# change dates to get year, month, and week
+bike &lt;- bike0 %&gt;% 
+  clean_names() %&gt;% 
+  rename (bikes_hired = number_of_bicycle_hires) %&gt;% 
+  mutate (year = year(day),
+          month = lubridate::month(day, label = FALSE),
+          week = week(day))</code></pre>
+<p>We can easily create a facet grid that plots bikes hired by month and
+year since 2015</p>
+<p>However, the challenge I want you to work on is to reproduce the
+following two graphs.</p>
+<p><img src="/blogs/blog4_files/figure-html/tfl_absolute_monthly_change-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>The second one looks at percentage changes from the expected level of
+weekly rentals. The two grey shaded rectangles correspond to Q2 (weeks
+14-26) and Q4 (weeks 40-52).</p>
+<p><img src="/blogs/blog4_files/figure-html/tfl_percent_change-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Should you use the mean or the median to calculate your expected
+rentals? Why?</p>
+<p>We should use the mean to calculate expected rentals as</p>
+<hr />
+</div>
