@@ -15,20 +15,26 @@ params:
     heading: Page couldn't be found
     text: 'Please visit [this page](/)'
   navigation:
-    title: Home
-    subtitle: Page
+    title: Emma 
+    subtitle: Portfolio Website
     menu: Menu
     links:
       - name: Homepage
         url: '#'
       - name: Blogs
         url: blogs
-      - name: Generic Blog
-        url: blogs/ipsum
-      - name: Elements
-        url: elements.html
+      - name: Personal biography 
+        url: blogs/emma
+      - name: CV
+        url: blogs/cv
+      - name: Data analytics Project 1
+        url: blogs/project1
+      - name: Data analytics Project 2
+        url: blogs/project2
+
+
     button1:
-      - name: Get Started
+      - name: 
         url: blogs
     button2:
       - name: Log In
@@ -43,11 +49,11 @@ params:
     showcase:
       - title: Who's Emma ? 
         subtitle: A bit about me 
-        image: cover_website.JPG
+        image: blog1cover.jpg
         url: blogs/emma
       - title: CV
         subtitle: A bit more formal
-        image: pic02.jpg
+        image: blog2cover.jpg
         url: blogs/cv
       - title: Data Analytics Project 1
         subtitle: Evolution of  rental prices in San Francisco
@@ -58,8 +64,8 @@ params:
         image: blog4cover.jpg
         url: blogs/project2
       - title: Pre-programme assignment
-        subtitle: Short biography and data analytics using gapminder dataset
-        image: pic05.jpg
+        subtitle: Short biography and data analytics introduction 
+        image: blog5cover.jpg
         url: blogs/project3
 
   blog: {}
@@ -79,10 +85,10 @@ params:
       - title: Email
         email: emmazurs@gmail.com
     phone:
-      - title: text me 
+      - title: Phone number
         phone: +32 479 47 63 65
     address:
-      - title: write me 
+      - title: Postal address 
         street: 3 Chilworth Mews
         city: 'London'
         country: UK
@@ -105,7 +111,4 @@ params:
       - icon: fa-linkedin
         url: 'https://www.linkedin.com/in/emmazurs/'
         label: LinkedIn
-    quicklinks:
-      - text: 'Design: '
-        url: 'https://www.html5up.net'
-        alt: HTML5 UP
+

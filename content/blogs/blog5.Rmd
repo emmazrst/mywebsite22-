@@ -1,7 +1,7 @@
 ---
 title: " Pre-programme assignment"
 description: "This is a pre-programme assignnent that was submitted for the Master in Analytics and Management's Applied Statistics class."
-image: sanfran.jpg
+image: blog5.jpg
 slug: "project3"
 keywords: ""
 categories: 
@@ -41,25 +41,19 @@ continent_data <- gapminder %>%
             filter(continent == "Europe")
 ```
 
-First, create a plot of life expectancy over time for the single country you chose.
-Map `year` on the x-axis, and `lifeExp` on the y-axis.
-You should also use `geom_point()` to see the actual data points and `geom_smooth(se = FALSE)` to plot the underlying trendlines.
-You need to remove the comments **\#** from the lines below for your code to run.
+First, I created a plot of life expectancy over time for Belgium
 
-```{r, lifeExp_one_country}
+```{r, lifeExp_one_country,  echo=FALSE, out.width="100%"}
 plot1 <- ggplot(country_data, aes(x = year, y = lifeExp))+
    geom_point() +
    geom_smooth(se = FALSE)+
     labs(title = "Life expectancy of Belgium over the years",x = "Year", y = "Life Expectancy")+
    NULL
-
-plot1
 ```
-
 
 The second plot shows life expectancy over time for all countries in Europe
 
-```{r lifeExp_one_continent}
+```{r lifeExp_one_continent,  echo=FALSE, out.width="100%"}
 ggplot(continent_data, aes(x = year , y = lifeExp, colour= country, group = country))+
    geom_point()+ 
    geom_smooth(se = FALSE) +
@@ -73,7 +67,7 @@ ggplot(continent_data, aes(x = year , y = lifeExp, colour= country, group = coun
 
 Finally, the graph belows shows life expectancy over time grouped  by continent.
 
-```{r lifeExp_facet_by_continent}
+```{r lifeExp_facet_by_continent,  echo=FALSE, out.width="100%"}
 ggplot(gapminder , aes(x = year , y = lifeExp , colour= continent))+
    geom_point() + 
    geom_smooth(se = FALSE) +
@@ -133,7 +127,7 @@ The correlation is almost 0.5, which shows that the two variables are positively
 We can also create a scatterplot between these two variables using `geom_point`.
 We also add the best fit line, using `geom_smooth(method = "lm")`.
 
-```{r brexit_immigration_plot}
+```{r brexit_immigration_plot,  echo=FALSE, out.width="100%"}
 ggplot(brexit_results, aes(x = born_in_uk, y = leave_share)) +
   geom_point(alpha=0.3) +
   geom_smooth(method = "lm") + 
@@ -166,12 +160,11 @@ url <- "https://data.london.gov.uk/download/animal-rescue-incidents-attended-by-
 animal_rescue <- read_csv(url,
                           locale = locale(encoding = "CP1252")) %>% 
   janitor::clean_names()
-glimpse(animal_rescue)
 ```
 
 We count to see how many observations fall within one category.
 
-```{r, instances_by_calendar_year}
+```{r, instances_by_calendar_year,  echo=FALSE, out.width="100%"}
 animal_rescue %>% 
   dplyr::group_by(cal_year) %>% 
   summarise(count=n())
@@ -181,7 +174,7 @@ animal_rescue %>%
 
 How many incidents by animal group ? 
 
-```{r, animal_group_percentages}
+```{r, animal_group_percentages,  echo=FALSE, out.width="100%"}
 animal_rescue %>% 
   group_by(animal_group_parent) %>% 
   summarise(count = n()) %>% 
@@ -193,10 +186,9 @@ animal_rescue %>%
 ```
 
 > Please note that any cost included is a notional cost calculated based on the length of time rounded up to the nearest hour spent by Pump, Aerial and FRU appliances at the incident and charged at the current Brigade hourly rate.
-> There is two things we will do:
 
-1.  Calculate the mean and median `incident_notional_cost` for each `animal_group_parent`
-2.  Plot a boxplot to get a feel for the distribution of `incident_notional_cost` by `animal_group_parent`.
+1. I Calculate the mean and median `incident_notional_cost` for each `animal_group_parent`
+2.  I plot a boxplot to get a feel for the distribution of `incident_notional_cost` by `animal_group_parent`.
 
 ```{r, parse_incident_cost,message=FALSE, warning=FALSE}
 typeof(animal_rescue$incident_notional_cost)

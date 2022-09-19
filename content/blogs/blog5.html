@@ -1,7 +1,7 @@
 ---
 title: " Pre-programme assignment"
 description: "This is a pre-programme assignnent that was submitted for the Master in Analytics and Management's Applied Statistics class."
-image: sanfran.jpg
+image: blog5.jpg
 slug: "project3"
 keywords: ""
 categories: 
@@ -26,40 +26,13 @@ I then decided to take a web development course before deciding to dive deeper b
             filter(country == &quot;Belgium&quot;)
 continent_data &lt;- gapminder %&gt;% 
             filter(continent == &quot;Europe&quot;)</code></pre>
-<p>First, create a plot of life expectancy over time for the single country you chose.
-Map <code>year</code> on the x-axis, and <code>lifeExp</code> on the y-axis.
-You should also use <code>geom_point()</code> to see the actual data points and <code>geom_smooth(se = FALSE)</code> to plot the underlying trendlines.
-You need to remove the comments <strong>#</strong> from the lines below for your code to run.</p>
-<pre class="r"><code>plot1 &lt;- ggplot(country_data, aes(x = year, y = lifeExp))+
-   geom_point() +
-   geom_smooth(se = FALSE)+
-    labs(title = &quot;Life expectancy of Belgium over the years&quot;,x = &quot;Year&quot;, y = &quot;Life Expectancy&quot;)+
-   NULL
-
-plot1</code></pre>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="/blogs/blog5_files/figure-html/lifeExp_one_country-1.png" width="672" /></p>
+<p>First, I created a plot of life expectancy over time for Belgium</p>
 <p>The second plot shows life expectancy over time for all countries in Europe</p>
-<pre class="r"><code>ggplot(continent_data, aes(x = year , y = lifeExp, colour= country, group = country))+
-   geom_point()+ 
-   geom_smooth(se = FALSE) +
-  labs(title = &quot;Life expectancy of EU countries over the years&quot;,x = &quot;Year&quot;, y = &quot;Life Expectancy&quot;)+
-      theme_bw() + 
-    theme(legend.position = &quot;none&quot;,
-        strip.background = element_blank(),
-        panel.border = element_blank()) +
-   NULL</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="/blogs/blog5_files/figure-html/lifeExp_one_continent-1.png" width="672" /></p>
+<p><img src="/blogs/blog5_files/figure-html/lifeExp_one_continent-1.png" width="100%" /></p>
 <p>Finally, the graph belows shows life expectancy over time grouped by continent.</p>
-<pre class="r"><code>ggplot(gapminder , aes(x = year , y = lifeExp , colour= continent))+
-   geom_point() + 
-   geom_smooth(se = FALSE) +
-   facet_wrap(~continent) +
-   theme(legend.position=&quot;none&quot;) +
-   NULL</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="/blogs/blog5_files/figure-html/lifeExp_facet_by_continent-1.png" width="672" /></p>
+<p><img src="/blogs/blog5_files/figure-html/lifeExp_facet_by_continent-1.png" width="100%" /></p>
 <div id="conclusion-life-expectancy-since-1952" class="section level3">
 <h3>Conclusion: life expectancy since 1952</h3>
 <p>On every continent life expectancy has increased.Asia and the Americas have seen the largest increase in life expectancy. Europe and Oceania already had the highest life expectancies in 1952 and it improved less dramatically than in other continents.
@@ -96,18 +69,8 @@ We check the relationship between the proportion of native born residents in a c
 <p>The correlation is almost 0.5, which shows that the two variables are positively correlated.</p>
 <p>We can also create a scatterplot between these two variables using <code>geom_point</code>.
 We also add the best fit line, using <code>geom_smooth(method = "lm")</code>.</p>
-<pre class="r"><code>ggplot(brexit_results, aes(x = born_in_uk, y = leave_share)) +
-  geom_point(alpha=0.3) +
-  geom_smooth(method = &quot;lm&quot;) + 
-  theme_bw() +
-  labs(title = &quot;Brexit Analysis&quot;, subtitle = &quot;Relationship between being born in the UK and voting Leave&quot;, 
-       x = &quot;Born in the UK&quot;, y = &quot;Voted Leave&quot;)+
-    theme(legend.position = &quot;none&quot;,
-        strip.background = element_blank(),
-        panel.border = element_blank()) +
-  NULL</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="/blogs/blog5_files/figure-html/brexit_immigration_plot-1.png" width="672" /></p>
+<p><img src="/blogs/blog5_files/figure-html/brexit_immigration_plot-1.png" width="100%" /></p>
 <div id="the-relationship-between-the-proportion-of-people-born-in-the-uk-and-share-of-leave-votes" class="section level3">
 <h3>The relationship between the proportion of people born in the Uk and share of leave votes</h3>
 <p>There is a moderate to strong correlation between the proportion of people born in the UK in a constituency and the share of ‘leave votes’ since it is almost 0.5.
@@ -125,45 +88,8 @@ We do not routinely record data about animal deaths or injuries.</p>
 <pre class="r"><code>url &lt;- &quot;https://data.london.gov.uk/download/animal-rescue-incidents-attended-by-lfb/f43b485e-fb35-419c-aa7a-fa75676e5835/Animal%20Rescue%20incidents%20attended%20by%20LFB%20from%20Jan%202009.csv&quot;
 animal_rescue &lt;- read_csv(url,
                           locale = locale(encoding = &quot;CP1252&quot;)) %&gt;% 
-  janitor::clean_names()
-glimpse(animal_rescue)</code></pre>
-<pre><code>## Rows: 8,751
-## Columns: 31
-## $ incident_number               &lt;chr&gt; &quot;139091&quot;, &quot;275091&quot;, &quot;2075091&quot;, &quot;2872091&quot;…
-## $ date_time_of_call             &lt;chr&gt; &quot;01/01/2009 03:01&quot;, &quot;01/01/2009 08:51&quot;, …
-## $ cal_year                      &lt;dbl&gt; 2009, 2009, 2009, 2009, 2009, 2009, 2009…
-## $ fin_year                      &lt;chr&gt; &quot;2008/09&quot;, &quot;2008/09&quot;, &quot;2008/09&quot;, &quot;2008/0…
-## $ type_of_incident              &lt;chr&gt; &quot;Special Service&quot;, &quot;Special Service&quot;, &quot;S…
-## $ pump_count                    &lt;chr&gt; &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, …
-## $ pump_hours_total              &lt;chr&gt; &quot;2&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, …
-## $ hourly_notional_cost          &lt;dbl&gt; 255, 255, 255, 255, 255, 255, 255, 255, …
-## $ incident_notional_cost        &lt;chr&gt; &quot;510&quot;, &quot;255&quot;, &quot;255&quot;, &quot;255&quot;, &quot;255&quot;, &quot;255&quot;…
-## $ final_description             &lt;chr&gt; &quot;Redacted&quot;, &quot;Redacted&quot;, &quot;Redacted&quot;, &quot;Red…
-## $ animal_group_parent           &lt;chr&gt; &quot;Dog&quot;, &quot;Fox&quot;, &quot;Dog&quot;, &quot;Horse&quot;, &quot;Rabbit&quot;, …
-## $ originof_call                 &lt;chr&gt; &quot;Person (land line)&quot;, &quot;Person (land line…
-## $ property_type                 &lt;chr&gt; &quot;House - single occupancy&quot;, &quot;Railings&quot;, …
-## $ property_category             &lt;chr&gt; &quot;Dwelling&quot;, &quot;Outdoor Structure&quot;, &quot;Outdoo…
-## $ special_service_type_category &lt;chr&gt; &quot;Other animal assistance&quot;, &quot;Other animal…
-## $ special_service_type          &lt;chr&gt; &quot;Animal assistance involving livestock -…
-## $ ward_code                     &lt;chr&gt; &quot;E05011467&quot;, &quot;E05000169&quot;, &quot;E05000558&quot;, &quot;…
-## $ ward                          &lt;chr&gt; &quot;Crystal Palace &amp; Upper Norwood&quot;, &quot;Woods…
-## $ borough_code                  &lt;chr&gt; &quot;E09000008&quot;, &quot;E09000008&quot;, &quot;E09000029&quot;, &quot;…
-## $ borough                       &lt;chr&gt; &quot;Croydon&quot;, &quot;Croydon&quot;, &quot;Sutton&quot;, &quot;Hilling…
-## $ stn_ground_name               &lt;chr&gt; &quot;Norbury&quot;, &quot;Woodside&quot;, &quot;Wallington&quot;, &quot;Ru…
-## $ uprn                          &lt;chr&gt; &quot;NULL&quot;, &quot;NULL&quot;, &quot;NULL&quot;, &quot;1.00E+11&quot;, &quot;NUL…
-## $ street                        &lt;chr&gt; &quot;Waddington Way&quot;, &quot;Grasmere Road&quot;, &quot;Mill…
-## $ usrn                          &lt;chr&gt; &quot;20500146&quot;, &quot;NULL&quot;, &quot;NULL&quot;, &quot;21401484&quot;, …
-## $ postcode_district             &lt;chr&gt; &quot;SE19&quot;, &quot;SE25&quot;, &quot;SM5&quot;, &quot;UB9&quot;, &quot;RM3&quot;, &quot;RM…
-## $ easting_m                     &lt;chr&gt; &quot;NULL&quot;, &quot;534785&quot;, &quot;528041&quot;, &quot;504689&quot;, &quot;N…
-## $ northing_m                    &lt;chr&gt; &quot;NULL&quot;, &quot;167546&quot;, &quot;164923&quot;, &quot;190685&quot;, &quot;N…
-## $ easting_rounded               &lt;dbl&gt; 532350, 534750, 528050, 504650, 554650, …
-## $ northing_rounded              &lt;dbl&gt; 170050, 167550, 164950, 190650, 192350, …
-## $ latitude                      &lt;chr&gt; &quot;NULL&quot;, &quot;51.39095371&quot;, &quot;51.36894086&quot;, &quot;5…
-## $ longitude                     &lt;chr&gt; &quot;NULL&quot;, &quot;-0.064166887&quot;, &quot;-0.161985191&quot;, …</code></pre>
+  janitor::clean_names()</code></pre>
 <p>We count to see how many observations fall within one category.</p>
-<pre class="r"><code>animal_rescue %&gt;% 
-  dplyr::group_by(cal_year) %&gt;% 
-  summarise(count=n())</code></pre>
 <pre><code>## # A tibble: 14 × 2
 ##    cal_year count
 ##       &lt;dbl&gt; &lt;int&gt;
@@ -181,8 +107,6 @@ glimpse(animal_rescue)</code></pre>
 ## 12     2020   758
 ## 13     2021   885
 ## 14     2022   641</code></pre>
-<pre class="r"><code>animal_rescue %&gt;% 
-  count(cal_year, name=&quot;count&quot;)</code></pre>
 <pre><code>## # A tibble: 14 × 2
 ##    cal_year count
 ##       &lt;dbl&gt; &lt;int&gt;
@@ -201,11 +125,6 @@ glimpse(animal_rescue)</code></pre>
 ## 13     2021   885
 ## 14     2022   641</code></pre>
 <p>How many incidents by animal group ?</p>
-<pre class="r"><code>animal_rescue %&gt;% 
-  group_by(animal_group_parent) %&gt;% 
-  summarise(count = n()) %&gt;% 
-  mutate(percent = round(100*count/sum(count),2)) %&gt;% 
-  arrange(desc(percent))</code></pre>
 <pre><code>## # A tibble: 28 × 3
 ##    animal_group_parent              count percent
 ##    &lt;chr&gt;                            &lt;int&gt;   &lt;dbl&gt;
@@ -220,9 +139,6 @@ glimpse(animal_rescue)</code></pre>
 ##  9 Squirrel                            75    0.86
 ## 10 Unknown - Heavy Livestock Animal    50    0.57
 ## # … with 18 more rows</code></pre>
-<pre class="r"><code>animal_rescue %&gt;% 
-  count(animal_group_parent, name=&quot;count&quot;, sort=TRUE) %&gt;% 
-  mutate(percent = round(100*count/sum(count),2))</code></pre>
 <pre><code>## # A tibble: 28 × 3
 ##    animal_group_parent              count percent
 ##    &lt;chr&gt;                            &lt;int&gt;   &lt;dbl&gt;
@@ -238,12 +154,11 @@ glimpse(animal_rescue)</code></pre>
 ## 10 Unknown - Heavy Livestock Animal    50    0.57
 ## # … with 18 more rows</code></pre>
 <blockquote>
-<p>Please note that any cost included is a notional cost calculated based on the length of time rounded up to the nearest hour spent by Pump, Aerial and FRU appliances at the incident and charged at the current Brigade hourly rate.
-There is two things we will do:</p>
+<p>Please note that any cost included is a notional cost calculated based on the length of time rounded up to the nearest hour spent by Pump, Aerial and FRU appliances at the incident and charged at the current Brigade hourly rate.</p>
 </blockquote>
 <ol style="list-style-type: decimal">
-<li>Calculate the mean and median <code>incident_notional_cost</code> for each <code>animal_group_parent</code></li>
-<li>Plot a boxplot to get a feel for the distribution of <code>incident_notional_cost</code> by <code>animal_group_parent</code>.</li>
+<li>I Calculate the mean and median <code>incident_notional_cost</code> for each <code>animal_group_parent</code></li>
+<li>I plot a boxplot to get a feel for the distribution of <code>incident_notional_cost</code> by <code>animal_group_parent</code>.</li>
 </ol>
 <pre class="r"><code>typeof(animal_rescue$incident_notional_cost)</code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
