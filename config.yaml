@@ -1,6 +1,6 @@
 baseURL: 'https://website22emma.netlify.app/'
 languageCode: en-us
-title: Dopest website out there 
+title: Emma's website 
 theme: forty
 googleAnalytics: ''
 disqusShortname: ''
@@ -15,8 +15,8 @@ params:
     heading: Page couldn't be found
     text: 'Please visit [this page](/)'
   navigation:
-    title: Goodmorning 
-    subtitle: internet people
+    title: Home
+    subtitle: Page
     menu: Menu
     links:
       - name: Homepage
@@ -49,22 +49,19 @@ params:
         subtitle: A bit more formal
         image: pic02.jpg
         url: blogs/cv
-      - title: Project 1 
-        subtitle: Lorem Etiam Nullam
-        image: pic03.jpg
+      - title: Data Analytics Project 1
+        subtitle: Evolution of  rental prices in San Francisco
+        image: blog3cover.jpg
         url: blogs/project1
-      - title: Project 2
-        subtitle: Nisl Sed Aliquam
-        image: pic04.jpg
+      - title:  Data Analytics Project 2
+        subtitle: Excess rentals in TfL bike sharing
+        image: blog4cover.jpg
         url: blogs/project2
-      - title: Consequat
-        subtitle: Ipsum Dolor Sit Amet
+      - title: Pre-programme assignment
+        subtitle: Short biography and data analytics using gapminder dataset
         image: pic05.jpg
-        url: blogs/ipsum
-      - title: Etiam
-        subtitle: Feugiat Amet Tempus
-        image: pic06.jpg
-        url: blogs/ipsum
+        url: blogs/project3
+
   blog: {}
   two:
     enable: true

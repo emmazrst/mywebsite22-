@@ -1,0 +1,319 @@
+---
+title: " Pre-programme assignment"
+description: "This is a pre-programme assignnent that was submitted for the Master in Analytics and Management's Applied Statistics class."
+image: sanfran.jpg
+slug: "project3"
+keywords: ""
+categories: 
+    - ""
+    - ""
+date: 2017-10-31T22:26:13-05:00
+draft: false
+---
+
+
+
+<div id="emmas-biography" class="section level1">
+<h1>1. Emma’s biography</h1>
+<p>My name is Emma Zurstrassen, I am from Belgium and recently graduated from a <em>Bachelor’s in Business Administration</em> at <strong>ESADE University</strong> in Barcelona.
+During my studies I had the chance to intern in a tech startup studio, which go me very interested in the world tech startups and data.
+I then decided to take a web development course before deciding to dive deeper by pursuing a master in analytics and management at <strong>LBS</strong>.</p>
+</div>
+<div id="gapminder-country-comparison" class="section level1">
+<h1>2. <code>Gapminder</code> country comparison</h1>
+<p>How life expectancy has changed over the years for Belgium and Europe.</p>
+<pre class="r"><code>country_data &lt;- gapminder %&gt;% 
+            filter(country == &quot;Belgium&quot;)
+continent_data &lt;- gapminder %&gt;% 
+            filter(continent == &quot;Europe&quot;)</code></pre>
+<p>First, create a plot of life expectancy over time for the single country you chose.
+Map <code>year</code> on the x-axis, and <code>lifeExp</code> on the y-axis.
+You should also use <code>geom_point()</code> to see the actual data points and <code>geom_smooth(se = FALSE)</code> to plot the underlying trendlines.
+You need to remove the comments <strong>#</strong> from the lines below for your code to run.</p>
+<pre class="r"><code>plot1 &lt;- ggplot(country_data, aes(x = year, y = lifeExp))+
+   geom_point() +
+   geom_smooth(se = FALSE)+
+    labs(title = &quot;Life expectancy of Belgium over the years&quot;,x = &quot;Year&quot;, y = &quot;Life Expectancy&quot;)+
+   NULL
+
+plot1</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/lifeExp_one_country-1.png" width="672" /></p>
+<p>The second plot shows life expectancy over time for all countries in Europe</p>
+<pre class="r"><code>ggplot(continent_data, aes(x = year , y = lifeExp, colour= country, group = country))+
+   geom_point()+ 
+   geom_smooth(se = FALSE) +
+  labs(title = &quot;Life expectancy of EU countries over the years&quot;,x = &quot;Year&quot;, y = &quot;Life Expectancy&quot;)+
+      theme_bw() + 
+    theme(legend.position = &quot;none&quot;,
+        strip.background = element_blank(),
+        panel.border = element_blank()) +
+   NULL</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/lifeExp_one_continent-1.png" width="672" /></p>
+<p>Finally, the graph belows shows life expectancy over time grouped by continent.</p>
+<pre class="r"><code>ggplot(gapminder , aes(x = year , y = lifeExp , colour= continent))+
+   geom_point() + 
+   geom_smooth(se = FALSE) +
+   facet_wrap(~continent) +
+   theme(legend.position=&quot;none&quot;) +
+   NULL</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/lifeExp_facet_by_continent-1.png" width="672" /></p>
+<div id="conclusion-life-expectancy-since-1952" class="section level3">
+<h3>Conclusion: life expectancy since 1952</h3>
+<p>On every continent life expectancy has increased.Asia and the Americas have seen the largest increase in life expectancy. Europe and Oceania already had the highest life expectancies in 1952 and it improved less dramatically than in other continents.
+Furthermore Europe and Oceania’s data is a lot less scattered than Adrica, America and Asia. These continents have high differences in the life expectancy of their countries.
+This can be attributed to the fact that they are very big and therefore contain both very developped countries as well as third world countries.</p>
+</div>
+</div>
+<div id="brexit-vote-analysis" class="section level1">
+<h1>3: Brexit vote analysis</h1>
+<p>Results of the 2016 Brexit vote in the UK.</p>
+<pre class="r"><code>brexit_results &lt;- read_csv(&quot;https://raw.githubusercontent.com/kostis-christodoulou/am01/master/data/brexit_results.csv&quot;)</code></pre>
+<p>The data comes from <a href="https://www.thecrosstab.com/">Elliott Morris</a>, who cleaned it and made it available through his <a href="https://www.datacamp.com/courses/analyzing-election-and-polling-data-in-r">DataCamp class on analysing election and polling data in R</a>.</p>
+<p>The main outcome variable (or y) is <code>leave_share</code>, which is the percent of votes cast in favour of Brexit, or leaving the EU.
+Each row is a UK <a href="https://en.wikipedia.org/wiki/United_Kingdom_Parliament_constituencies">parliament constituency</a>.</p>
+<p>Below is a histogram, a density plot, and the empirical cumulative distribution function of the leave % in all constituencies.</p>
+<pre class="r"><code>ggplot(brexit_results, aes(x = leave_share)) +
+  geom_histogram(binwidth = 2.5)</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/brexit_histogram-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(brexit_results, aes(x = leave_share)) +
+  geom_density()</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/brexit_histogram-2.png" width="672" /></p>
+<pre class="r"><code>ggplot(brexit_results, aes(x = leave_share)) +
+  stat_ecdf(geom = &quot;step&quot;, pad = FALSE) +
+  scale_y_continuous(labels = scales::percent)</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/brexit_histogram-3.png" width="672" /></p>
+<p>One common explanation for the Brexit outcome was fear of immigration and opposition to the EU’s more open border policy.
+We check the relationship between the proportion of native born residents in a constituency and its leave_share.</p>
+<pre class="r"><code>brexit_results %&gt;% 
+  select(leave_share, born_in_uk) %&gt;% 
+  cor()</code></pre>
+<pre><code>##             leave_share born_in_uk
+## leave_share   1.0000000  0.4934295
+## born_in_uk    0.4934295  1.0000000</code></pre>
+<p>The correlation is almost 0.5, which shows that the two variables are positively correlated.</p>
+<p>We can also create a scatterplot between these two variables using <code>geom_point</code>.
+We also add the best fit line, using <code>geom_smooth(method = "lm")</code>.</p>
+<pre class="r"><code>ggplot(brexit_results, aes(x = born_in_uk, y = leave_share)) +
+  geom_point(alpha=0.3) +
+  geom_smooth(method = &quot;lm&quot;) + 
+  theme_bw() +
+  labs(title = &quot;Brexit Analysis&quot;, subtitle = &quot;Relationship between being born in the UK and voting Leave&quot;, 
+       x = &quot;Born in the UK&quot;, y = &quot;Voted Leave&quot;)+
+    theme(legend.position = &quot;none&quot;,
+        strip.background = element_blank(),
+        panel.border = element_blank()) +
+  NULL</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/brexit_immigration_plot-1.png" width="672" /></p>
+<div id="the-relationship-between-the-proportion-of-people-born-in-the-uk-and-share-of-leave-votes" class="section level3">
+<h3>The relationship between the proportion of people born in the Uk and share of leave votes</h3>
+<p>There is a moderate to strong correlation between the proportion of people born in the UK in a constituency and the share of ‘leave votes’ since it is almost 0.5.
+The higher the proportion of people born in the UK in a constituency, the higher chance of voting leave. The majority of constituencies have a very high share of people born in the UK, which means it is hard to tell if this factor played a significant role in the proportion of people voting leave. It is likely attributed to other socio-economic conditions such as income, education, social class, etc.</p>
+</div>
+</div>
+<div id="animal-rescue-incidents-attended-by-the-london-fire-brigade" class="section level1">
+<h1>4. Animal rescue incidents attended by the London Fire Brigade</h1>
+<p><a href="https://data.london.gov.uk/dataset/animal-rescue-incidents-attended-by-lfb">The London Fire Brigade</a> attends a range of non-fire incidents (which we call ‘special services’).
+These ‘special services’ include assistance to animals that may be trapped or in distress.
+The data is provided from January 2009 and is updated monthly.
+A range of information is supplied for each incident including some location information (postcode, borough, ward), as well as the data/time of the incidents.
+We do not routinely record data about animal deaths or injuries.</p>
+<p>Please note that any cost included is a notional cost calculated based on the length of time rounded up to the nearest hour spent by Pump, Aerial and FRU appliances at the incident and charged at the current Brigade hourly rate.</p>
+<pre class="r"><code>url &lt;- &quot;https://data.london.gov.uk/download/animal-rescue-incidents-attended-by-lfb/f43b485e-fb35-419c-aa7a-fa75676e5835/Animal%20Rescue%20incidents%20attended%20by%20LFB%20from%20Jan%202009.csv&quot;
+animal_rescue &lt;- read_csv(url,
+                          locale = locale(encoding = &quot;CP1252&quot;)) %&gt;% 
+  janitor::clean_names()
+glimpse(animal_rescue)</code></pre>
+<pre><code>## Rows: 8,751
+## Columns: 31
+## $ incident_number               &lt;chr&gt; &quot;139091&quot;, &quot;275091&quot;, &quot;2075091&quot;, &quot;2872091&quot;…
+## $ date_time_of_call             &lt;chr&gt; &quot;01/01/2009 03:01&quot;, &quot;01/01/2009 08:51&quot;, …
+## $ cal_year                      &lt;dbl&gt; 2009, 2009, 2009, 2009, 2009, 2009, 2009…
+## $ fin_year                      &lt;chr&gt; &quot;2008/09&quot;, &quot;2008/09&quot;, &quot;2008/09&quot;, &quot;2008/0…
+## $ type_of_incident              &lt;chr&gt; &quot;Special Service&quot;, &quot;Special Service&quot;, &quot;S…
+## $ pump_count                    &lt;chr&gt; &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, …
+## $ pump_hours_total              &lt;chr&gt; &quot;2&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, …
+## $ hourly_notional_cost          &lt;dbl&gt; 255, 255, 255, 255, 255, 255, 255, 255, …
+## $ incident_notional_cost        &lt;chr&gt; &quot;510&quot;, &quot;255&quot;, &quot;255&quot;, &quot;255&quot;, &quot;255&quot;, &quot;255&quot;…
+## $ final_description             &lt;chr&gt; &quot;Redacted&quot;, &quot;Redacted&quot;, &quot;Redacted&quot;, &quot;Red…
+## $ animal_group_parent           &lt;chr&gt; &quot;Dog&quot;, &quot;Fox&quot;, &quot;Dog&quot;, &quot;Horse&quot;, &quot;Rabbit&quot;, …
+## $ originof_call                 &lt;chr&gt; &quot;Person (land line)&quot;, &quot;Person (land line…
+## $ property_type                 &lt;chr&gt; &quot;House - single occupancy&quot;, &quot;Railings&quot;, …
+## $ property_category             &lt;chr&gt; &quot;Dwelling&quot;, &quot;Outdoor Structure&quot;, &quot;Outdoo…
+## $ special_service_type_category &lt;chr&gt; &quot;Other animal assistance&quot;, &quot;Other animal…
+## $ special_service_type          &lt;chr&gt; &quot;Animal assistance involving livestock -…
+## $ ward_code                     &lt;chr&gt; &quot;E05011467&quot;, &quot;E05000169&quot;, &quot;E05000558&quot;, &quot;…
+## $ ward                          &lt;chr&gt; &quot;Crystal Palace &amp; Upper Norwood&quot;, &quot;Woods…
+## $ borough_code                  &lt;chr&gt; &quot;E09000008&quot;, &quot;E09000008&quot;, &quot;E09000029&quot;, &quot;…
+## $ borough                       &lt;chr&gt; &quot;Croydon&quot;, &quot;Croydon&quot;, &quot;Sutton&quot;, &quot;Hilling…
+## $ stn_ground_name               &lt;chr&gt; &quot;Norbury&quot;, &quot;Woodside&quot;, &quot;Wallington&quot;, &quot;Ru…
+## $ uprn                          &lt;chr&gt; &quot;NULL&quot;, &quot;NULL&quot;, &quot;NULL&quot;, &quot;1.00E+11&quot;, &quot;NUL…
+## $ street                        &lt;chr&gt; &quot;Waddington Way&quot;, &quot;Grasmere Road&quot;, &quot;Mill…
+## $ usrn                          &lt;chr&gt; &quot;20500146&quot;, &quot;NULL&quot;, &quot;NULL&quot;, &quot;21401484&quot;, …
+## $ postcode_district             &lt;chr&gt; &quot;SE19&quot;, &quot;SE25&quot;, &quot;SM5&quot;, &quot;UB9&quot;, &quot;RM3&quot;, &quot;RM…
+## $ easting_m                     &lt;chr&gt; &quot;NULL&quot;, &quot;534785&quot;, &quot;528041&quot;, &quot;504689&quot;, &quot;N…
+## $ northing_m                    &lt;chr&gt; &quot;NULL&quot;, &quot;167546&quot;, &quot;164923&quot;, &quot;190685&quot;, &quot;N…
+## $ easting_rounded               &lt;dbl&gt; 532350, 534750, 528050, 504650, 554650, …
+## $ northing_rounded              &lt;dbl&gt; 170050, 167550, 164950, 190650, 192350, …
+## $ latitude                      &lt;chr&gt; &quot;NULL&quot;, &quot;51.39095371&quot;, &quot;51.36894086&quot;, &quot;5…
+## $ longitude                     &lt;chr&gt; &quot;NULL&quot;, &quot;-0.064166887&quot;, &quot;-0.161985191&quot;, …</code></pre>
+<p>We count to see how many observations fall within one category.</p>
+<pre class="r"><code>animal_rescue %&gt;% 
+  dplyr::group_by(cal_year) %&gt;% 
+  summarise(count=n())</code></pre>
+<pre><code>## # A tibble: 14 × 2
+##    cal_year count
+##       &lt;dbl&gt; &lt;int&gt;
+##  1     2009   568
+##  2     2010   611
+##  3     2011   620
+##  4     2012   603
+##  5     2013   585
+##  6     2014   583
+##  7     2015   540
+##  8     2016   604
+##  9     2017   539
+## 10     2018   610
+## 11     2019   604
+## 12     2020   758
+## 13     2021   885
+## 14     2022   641</code></pre>
+<pre class="r"><code>animal_rescue %&gt;% 
+  count(cal_year, name=&quot;count&quot;)</code></pre>
+<pre><code>## # A tibble: 14 × 2
+##    cal_year count
+##       &lt;dbl&gt; &lt;int&gt;
+##  1     2009   568
+##  2     2010   611
+##  3     2011   620
+##  4     2012   603
+##  5     2013   585
+##  6     2014   583
+##  7     2015   540
+##  8     2016   604
+##  9     2017   539
+## 10     2018   610
+## 11     2019   604
+## 12     2020   758
+## 13     2021   885
+## 14     2022   641</code></pre>
+<p>How many incidents by animal group ?</p>
+<pre class="r"><code>animal_rescue %&gt;% 
+  group_by(animal_group_parent) %&gt;% 
+  summarise(count = n()) %&gt;% 
+  mutate(percent = round(100*count/sum(count),2)) %&gt;% 
+  arrange(desc(percent))</code></pre>
+<pre><code>## # A tibble: 28 × 3
+##    animal_group_parent              count percent
+##    &lt;chr&gt;                            &lt;int&gt;   &lt;dbl&gt;
+##  1 Cat                               4232   48.4 
+##  2 Bird                              1803   20.6 
+##  3 Dog                               1341   15.3 
+##  4 Fox                                455    5.2 
+##  5 Unknown - Domestic Animal Or Pet   215    2.46
+##  6 Horse                              201    2.3 
+##  7 Deer                               152    1.74
+##  8 Unknown - Wild Animal              102    1.17
+##  9 Squirrel                            75    0.86
+## 10 Unknown - Heavy Livestock Animal    50    0.57
+## # … with 18 more rows</code></pre>
+<pre class="r"><code>animal_rescue %&gt;% 
+  count(animal_group_parent, name=&quot;count&quot;, sort=TRUE) %&gt;% 
+  mutate(percent = round(100*count/sum(count),2))</code></pre>
+<pre><code>## # A tibble: 28 × 3
+##    animal_group_parent              count percent
+##    &lt;chr&gt;                            &lt;int&gt;   &lt;dbl&gt;
+##  1 Cat                               4232   48.4 
+##  2 Bird                              1803   20.6 
+##  3 Dog                               1341   15.3 
+##  4 Fox                                455    5.2 
+##  5 Unknown - Domestic Animal Or Pet   215    2.46
+##  6 Horse                              201    2.3 
+##  7 Deer                               152    1.74
+##  8 Unknown - Wild Animal              102    1.17
+##  9 Squirrel                            75    0.86
+## 10 Unknown - Heavy Livestock Animal    50    0.57
+## # … with 18 more rows</code></pre>
+<blockquote>
+<p>Please note that any cost included is a notional cost calculated based on the length of time rounded up to the nearest hour spent by Pump, Aerial and FRU appliances at the incident and charged at the current Brigade hourly rate.
+There is two things we will do:</p>
+</blockquote>
+<ol style="list-style-type: decimal">
+<li>Calculate the mean and median <code>incident_notional_cost</code> for each <code>animal_group_parent</code></li>
+<li>Plot a boxplot to get a feel for the distribution of <code>incident_notional_cost</code> by <code>animal_group_parent</code>.</li>
+</ol>
+<pre class="r"><code>typeof(animal_rescue$incident_notional_cost)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>animal_rescue &lt;- animal_rescue %&gt;% 
+  mutate(incident_notional_cost = parse_number(incident_notional_cost))
+typeof(animal_rescue$incident_notional_cost)</code></pre>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<p>Summary statistics for each animal group:</p>
+<pre class="r"><code>animal_rescue %&gt;% 
+  
+  # group by animal_group_parent
+  group_by(animal_group_parent) %&gt;% 
+  
+  # filter resulting data, so each group has at least 6 observations
+  filter(n()&gt;6) %&gt;% 
+  
+  # summarise() will collapse all values into 3 values: the mean, median, and count  
+  # we use na.rm=TRUE to make sure we remove any NAs, or cases where we do not have the incident cos
+  summarise(mean_incident_cost = mean (incident_notional_cost, na.rm=TRUE),
+            median_incident_cost = median (incident_notional_cost, na.rm=TRUE),
+            sd_incident_cost = sd (incident_notional_cost, na.rm=TRUE),
+            min_incident_cost = min (incident_notional_cost, na.rm=TRUE),
+            max_incident_cost = max (incident_notional_cost, na.rm=TRUE),
+            count = n()) %&gt;% 
+  
+  # sort the resulting data in descending order. You choose whether to sort by count or mean cost.
+  arrange(desc(mean_incident_cost))</code></pre>
+<pre><code>## # A tibble: 17 × 7
+##    animal_group_parent             mean_…¹ media…² sd_in…³ min_i…⁴ max_i…⁵ count
+##    &lt;chr&gt;                             &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;
+##  1 Horse                              735.    596    536.      255    3480   201
+##  2 Cow                                599.    436    451.      260    1560     9
+##  3 Unknown - Wild Animal              422.    333    318.      260    2296   102
+##  4 Deer                               421.    339    276.      260    2340   152
+##  5 Fox                                382.    339    200.      255    2034   455
+##  6 Snake                              375.    352    122.      260     704    20
+##  7 Unknown - Heavy Livestock Anim…    374.    260    263.      255    1560    50
+##  8 Sheep                              355.    339    114.      255     596     7
+##  9 Dog                                353.    326    182.        0    3168  1341
+## 10 Cat                                351.    326    163.        0    3912  4232
+## 11 Bird                               349.    328    138.      255    1788  1803
+## 12 Unknown - Domestic Animal Or P…    331.    298    119.      255    1300   215
+## 13 cat                                329.    310.    87.4     260     596    20
+## 14 Squirrel                           318.    328     55.6     255     678    75
+## 15 Hamster                            317.    290     92.5     260     652    17
+## 16 Rabbit                             315.    330.    34.4     255     364    16
+## 17 Ferret                             314.    336     41.1     260     364    10
+## # … with abbreviated variable names ¹​mean_incident_cost, ²​median_incident_cost,
+## #   ³​sd_incident_cost, ⁴​min_incident_cost, ⁵​max_incident_cost</code></pre>
+<p>The plots below show the distribution of incident_cost for each animal group.</p>
+<pre class="r"><code># base_plot
+base_plot &lt;- animal_rescue %&gt;% 
+  group_by(animal_group_parent) %&gt;% 
+  filter(n()&gt;6) %&gt;% 
+  ggplot(aes(x=incident_notional_cost))+
+  facet_wrap(~animal_group_parent, scales = &quot;free&quot;)+
+  theme_bw()
+base_plot + geom_histogram()</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/plots_on_incident_cost_by_animal_group-1.png" width="672" /></p>
+<pre class="r"><code>base_plot + geom_density()</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/plots_on_incident_cost_by_animal_group-2.png" width="672" /></p>
+<pre class="r"><code>base_plot + geom_boxplot()</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/plots_on_incident_cost_by_animal_group-3.png" width="672" /></p>
+<pre class="r"><code>base_plot + stat_ecdf(geom = &quot;step&quot;, pad = FALSE) +
+  scale_y_continuous(labels = scales::percent)</code></pre>
+<p><img src="/blogs/blog5_files/figure-html/plots_on_incident_cost_by_animal_group-4.png" width="672" /></p>
+<div id="conclusion" class="section level3">
+<h3>Conclusion</h3>
+<p>The boxplot best communicates the variability of the incident_national_cost values, because boxplots are used to compare the distribution of a variable (here the cost) with respect to a certain category.
+Larger animals such as cows and horses tend to be more expensive to rescue than others which makes sense as they are heavier and requiring more manpower to move and rescue.
+Domestic animals such as cats, dogs, etc. tend to have costs which are much more spread out, this is probably because they are rescued very frequently leading to increased variability in the reasons why they would need to be rescued.</p>
+</div>
+</div>

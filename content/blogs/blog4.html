@@ -22,20 +22,17 @@ draft: false
 We can get the latest data by running the following.</p>
 <pre class="r"><code>url &lt;- &quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&quot;
 
-# Download TFL data to temporary file
 httr::GET(url, write_disk(bike.temp &lt;- tempfile(fileext = &quot;.xlsx&quot;)))</code></pre>
-<pre><code>## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2022-09-06T12%3A41%3A48/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20220914%2Feu-west-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20220914T104048Z&amp;X-Amz-Expires=300&amp;X-Amz-Signature=62913c78f51e1475942a32ab0cd397e6bc912ebff93f6985fb24c431502a12e5&amp;X-Amz-SignedHeaders=host]
-##   Date: 2022-09-14 10:43
+<pre><code>## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2022-09-06T12%3A41%3A48/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20220919%2Feu-west-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20220919T175638Z&amp;X-Amz-Expires=300&amp;X-Amz-Signature=ea5c2677638e4f32b1cb6a39250291cf3ee6a302a809b8159880631bb9ad336e&amp;X-Amz-SignedHeaders=host]
+##   Date: 2022-09-19 17:56
 ##   Status: 200
 ##   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 ##   Size: 180 kB
-## &lt;ON DISK&gt;  /var/folders/03/7l328pg93b9715g4y_d61_1m0000gn/T//RtmpjhVvqF/file95af1450f0d6.xlsx</code></pre>
-<pre class="r"><code># Use read_excel to read it as dataframe
-bike0 &lt;- read_excel(bike.temp,
+## &lt;ON DISK&gt;  /var/folders/03/7l328pg93b9715g4y_d61_1m0000gn/T//Rtmpaor3qB/file23836ae5d8c6.xlsx</code></pre>
+<pre class="r"><code>bike0 &lt;- read_excel(bike.temp,
                    sheet = &quot;Data&quot;,
                    range = cell_cols(&quot;A:B&quot;))
 
-# change dates to get year, month, and week
 bike &lt;- bike0 %&gt;% 
   clean_names() %&gt;% 
   rename (bikes_hired = number_of_bicycle_hires) %&gt;% 

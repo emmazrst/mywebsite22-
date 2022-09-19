@@ -59,15 +59,12 @@ We can get the latest data by running the following.
 ```{r, get_tfl_data, cache=TRUE}
 url <- "https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx"
 
-# Download TFL data to temporary file
 httr::GET(url, write_disk(bike.temp <- tempfile(fileext = ".xlsx")))
 
-# Use read_excel to read it as dataframe
 bike0 <- read_excel(bike.temp,
                    sheet = "Data",
                    range = cell_cols("A:B"))
 
-# change dates to get year, month, and week
 bike <- bike0 %>% 
   clean_names() %>% 
   rename (bikes_hired = number_of_bicycle_hires) %>% 
